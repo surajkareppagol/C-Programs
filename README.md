@@ -1,13 +1,19 @@
 # C PROGRAMS
 
-## PRINT PATTERN
+## KNAPSACK'S PROBLEM :
+
+C Program for Knapsack's Problem.
+
+![KP](images/KP.png)
+
+## PRINT PATTERN :
 
 C Program to print pattern.
 
-## SCHEDULING ALGORITHMS
+![PRINT PATTERN](images/PT.png)
+
+## SCHEDULING ALGORITHMS :
 
 C Program for Scheduling Algorithms.
 
-## KNAPSACK'S PROBLEM
-
-C Program for Knapsack's Problem.
+![SA](images/SA.png)

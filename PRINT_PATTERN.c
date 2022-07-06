@@ -1,16 +1,12 @@
 #include <stdio.h>
-#include <string.h>
-#include <math.h>
-#include <stdlib.h>
 
 int main()
 {
   int n, i, j, k, startRight = 0, startRepeat = 0, detectFirst = 0, detectsecond = 0, flag = 0;
+  printf("ENTER THE NUMBER : ");
   scanf("%d", &n);
-
   detectFirst = 2;
   detectsecond = n * 2 - 3;
-
   startRepeat = n - 1;
 
   for (i = 0; i < n * 2 - 1; i++)
@@ -20,7 +16,6 @@ int main()
   for (i = 0; i < n * 2 - 3; i++)
   {
     startRight = startRepeat;
-
     for (j = 0; j < n * 2 - 1; j++)
     {
       if (j == n * 2 - 2) // To print n at last
@@ -37,7 +32,6 @@ int main()
         startRight += 1;
         printf("%d ", startRight);
       }
-
       else
         printf("%d ", n - j); // To print 5 4 3 2 1
     }
@@ -57,7 +51,6 @@ int main()
     }
     printf("\n");
   }
-
   for (i = 0; i < n * 2 - 1; i++)
     printf("%d ", n);
   printf("\n");

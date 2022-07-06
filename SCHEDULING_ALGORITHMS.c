@@ -3,137 +3,148 @@
  *  LAST MODIFFIED : 06 / 07 / 2022
  */
 
+//////////////////////////////////////////////////////////////////////////////
+
 #include <stdio.h>
 #define MAX 100
 
-int n, choice, algoChoice, algoStat[MAX][7];
+//////////////////////////////////////////////////////////////////////////////
 
-// ARRANGE BURST TIME
-void arrangeBT(int iNum)
+int numberOfProcesses, choice, type, algorithmStat[MAX][7];
+float aTurnAroundTime = 0, aWaitingTime = 0;
+
+//////////////////////////////////////////////////////////////////////////////
+
+// ARRANGE STATS IN INCREASING ORDER
+void arrangeStat(int indexValue)
 {
-  int i, j, x, indexNumber = n, processNumber, arrivalTime, burstTime, tempElement;
-  for (j = 0; j < n; j++)
+  int indexI, indexJ, numberOfIndex, indexNumber = numberOfProcesses, processNumber, arrivalTime, burstTime, tempElement;
+  for (indexI = 0; indexI < numberOfProcesses; indexI++)
   {
-    tempElement = algoStat[0][iNum];
-    x = 0;
-    for (i = 1; i < indexNumber; i++)
-    {
-      if (tempElement < algoStat[i][iNum])
+    tempElement = algorithmStat[0][indexValue];
+    numberOfIndex = 0;
+    for (indexJ = 1; indexJ < indexNumber; indexJ++)
+      if (tempElement < algorithmStat[indexJ][indexValue])
       {
-        tempElement = algoStat[i][iNum];
-        x = i;
+        tempElement = algorithmStat[indexJ][indexValue];
+        numberOfIndex = indexJ;
       }
-    }
-    processNumber = algoStat[indexNumber - 1][0];
-    arrivalTime = algoStat[indexNumber - 1][1];
-    burstTime = algoStat[indexNumber - 1][2]; // SWAP TEMP = A
-    algoStat[indexNumber - 1][0] = algoStat[x][0];
-    algoStat[indexNumber - 1][1] = algoStat[x][1];
-    algoStat[indexNumber - 1][2] = algoStat[x][2]; // SWAP A = B
-    algoStat[x][0] = processNumber;
-    algoStat[x][1] = arrivalTime;
-    algoStat[x][2] = burstTime; // SWAP B = TEMP
+    processNumber = algorithmStat[indexNumber - 1][0];
+    arrivalTime = algorithmStat[indexNumber - 1][1];
+    burstTime = algorithmStat[indexNumber - 1][2]; // SWAP TEMP = A
+    algorithmStat[indexNumber - 1][0] = algorithmStat[numberOfIndex][0];
+    algorithmStat[indexNumber - 1][1] = algorithmStat[numberOfIndex][1];
+    algorithmStat[indexNumber - 1][2] = algorithmStat[numberOfIndex][2]; // SWAP A = B
+    algorithmStat[numberOfIndex][0] = processNumber;
+    algorithmStat[numberOfIndex][1] = arrivalTime;
+    algorithmStat[numberOfIndex][2] = burstTime; // SWAP B = TEMP
     indexNumber -= 1;
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////
+
 // DISPLAY ALL STATS
 void displayStat()
 {
-  int i, j;
+  int indexI;
   printf("\n---------------------------------------------------------------------------------------\n");
   printf("| PID | ARRIVAL TIME | BURST TIME | COMPLETION TIME | TURN AROUND TIME | WAITING TIME |\n");
   printf("---------------------------------------------------------------------------------------\n");
-  for (i = 0; i < n; i++)
+  for (indexI = 0; indexI < numberOfProcesses; indexI++)
   {
-    printf("| P%d  | %3d          | %3d        | %3d             | %3d              | %3d          |\n", algoStat[i][0], algoStat[i][1], algoStat[i][2], algoStat[i][3], algoStat[i][4], algoStat[i][5]);
+    printf("| P%d  | %3d          | %3d        | %3d             | %3d              | %3d          |\n", algorithmStat[indexI][0], algorithmStat[indexI][1], algorithmStat[indexI][2], algorithmStat[indexI][3], algorithmStat[indexI][4], algorithmStat[indexI][5]);
     printf("---------------------------------------------------------------------------------------\n");
   }
 }
 
-// DISPLAY GRANTT CHART
-void granttChart(int Inum)
+//////////////////////////////////////////////////////////////////////////////
+
+// DISPLAY GRANTT CHART FOR FCFS AND SJF(NP)
+void granttChart(int indexValue)
 {
   int indexNumber;
   printf("\n----------------\n");
   printf("| GRANTT CHART |\n");
   printf("----------------\n\n");
-  for (indexNumber = 0; indexNumber < Inum; indexNumber++)
+  for (indexNumber = 0; indexNumber < indexValue; indexNumber++)
     printf("------ ");
   printf("\n");
-  for (indexNumber = 0; indexNumber < Inum; indexNumber++)
-    printf("| P%d | ", algoStat[indexNumber][0]);
+  for (indexNumber = 0; indexNumber < indexValue; indexNumber++)
+    printf("| P%d | ", algorithmStat[indexNumber][0]);
   printf("\n");
-  for (indexNumber = 0; indexNumber < Inum; indexNumber++)
+  for (indexNumber = 0; indexNumber < indexValue; indexNumber++)
     printf("------ ");
   printf("\n");
-  for (indexNumber = 0; indexNumber < Inum; indexNumber++)
-    printf("      %d", algoStat[indexNumber][3]);
+  for (indexNumber = 0; indexNumber < indexValue; indexNumber++)
+    printf("      %d", algorithmStat[indexNumber][3]);
 }
 
-// FCFS ALGORITHM
-void fcfsFun()
+//////////////////////////////////////////////////////////////////////////////
+
+// FCFS ALGORITHM + CALCULATION FOR SJF(NP)
+void fcfsAlgorithm()
 {
   int indexNumber;
-  float tTAT = 0, tWT = 0;
-  algoStat[0][3] = algoStat[0][1] + algoStat[0][2];
-  for (indexNumber = 1; indexNumber < n; indexNumber++)
-    algoStat[indexNumber][3] = algoStat[indexNumber - 1][3] + algoStat[indexNumber][2];
-  for (indexNumber = 0; indexNumber < n; indexNumber++)
+  algorithmStat[0][3] = algorithmStat[0][1] + algorithmStat[0][2];
+  for (indexNumber = 1; indexNumber < numberOfProcesses; indexNumber++)
+    algorithmStat[indexNumber][3] = algorithmStat[indexNumber - 1][3] + algorithmStat[indexNumber][2];
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
   {
-    algoStat[indexNumber][4] = algoStat[indexNumber][3] - algoStat[indexNumber][1];
-    algoStat[indexNumber][5] = algoStat[indexNumber][4] - algoStat[indexNumber][2];
+    algorithmStat[indexNumber][4] = algorithmStat[indexNumber][3] - algorithmStat[indexNumber][1];
+    algorithmStat[indexNumber][5] = algorithmStat[indexNumber][4] - algorithmStat[indexNumber][2];
   }
-  for (indexNumber = 0; indexNumber < n; indexNumber++)
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
   {
-    tTAT += algoStat[indexNumber][4];
-    tWT += algoStat[indexNumber][5];
+    aTurnAroundTime += algorithmStat[indexNumber][4];
+    aWaitingTime += algorithmStat[indexNumber][5];
   }
 
-  displayStat();
+  granttChart(numberOfProcesses); // GRANTT CHART
+  displayStat();                  // DISPLAY STAT
   printf("\n\n");
-  printf("AVERAGE TURN AROUND TIME : %.2f ms\nAVERAGE WAITING TIME : %.2f ms\n", tTAT / n, tWT / n);
+  printf("AVERAGE TURN AROUND TIME : %.2f ms\nAVERAGE WAITING TIME : %.2f ms\n", aTurnAroundTime / numberOfProcesses, aWaitingTime / numberOfProcesses);
 }
 
+//////////////////////////////////////////////////////////////////////////////
+
 // SRTF ALGORITHM
-void sjfPFun()
+void srtfAlgorithm()
 {
-  int i, indexI, indexJ, indexNumber, indexValue, count = 0, totalBTime = 0, processExecutedFor = 0, tempElement, processNumber, flag = 1, readyQueue[MAX], processExecution[MAX], processExecutionTime[MAX], processDone[MAX];
-  float tTAT = 0, tWT = 0;
-  arrangeBT(1);
-  for (indexI = 0; indexI < n; indexI++)
+  int i, indexI, indexJ, indexNumber, indexValue, count = 0, totalBTime = 0, processExecutedFor = 0, tempElement, processNumber, flag = 1;
+  int processExecution[MAX], processExecutionTime[MAX], processDone[MAX];
+
+  arrangeStat(1); // ARRANGE THE ARRIVAL TIMES IN INCREASING ORDER
+  for (indexI = 0; indexI < numberOfProcesses; indexI++)
   {
-    algoStat[indexI][6] = algoStat[indexI][2];
-    totalBTime += algoStat[indexI][2]; // Find total Burst Time
+    algorithmStat[indexI][6] = algorithmStat[indexI][2]; // COPY BURST TIME
+    totalBTime += algorithmStat[indexI][2];              // FIND TOTAL BURST TIME
     processDone[indexI] = -1;
   }
   for (indexI = 0; indexI < totalBTime; indexI++)
   {
-    for (indexJ = 0; indexJ < n; indexJ++)
+    for (indexJ = 0; indexJ < numberOfProcesses; indexJ++)
     {
-      if (algoStat[indexJ][1] == indexI)
-      {
-        readyQueue[indexI] = algoStat[indexI][0];
+      if (algorithmStat[indexJ][1] == indexI) // CHECK HOW MANY PROCESSES ARRIVED
         count += 1;
-      }
     }
-    tempElement = algoStat[0][6];
+    tempElement = algorithmStat[0][6];
     processNumber = 0;
     for (i = 1; i < count; i++)
     {
-      if (tempElement > algoStat[i][6] && algoStat[i][6] != 0)
+      if (tempElement > algorithmStat[i][6] && algorithmStat[i][6] != 0)
       {
-        tempElement = algoStat[i][6];
+        tempElement = algorithmStat[i][6];
         processNumber = i;
       }
-    }                                                            // Find lowest Burst time
-    processExecutedFor += 1;                                     // Execute for 1 second
-    processExecutionTime[indexI] = processExecutedFor;           // Put Execution Time
-    processExecution[indexI] = algoStat[processNumber][0];       // Put PID
-    algoStat[processNumber][6] = algoStat[processNumber][6] - 1; // Decrement BT
+    }                                                                      // FIND LOWEST BURST TIME
+    processExecutedFor += 1;                                               // EXECUTE FOR 1 ms
+    processExecutionTime[indexI] = processExecutedFor;                     // PUT EXECUTION TIME
+    processExecution[indexI] = algorithmStat[processNumber][0];            // PUT PID
+    algorithmStat[processNumber][6] = algorithmStat[processNumber][6] - 1; // DECREMENT BT
   }
 
-  indexValue = 0;
+  indexValue = 0; // CALCULATE THE COMPLETION TIME
   for (indexI = totalBTime - 1; indexI >= 0; indexI--)
   {
     for (i = 0; i < indexValue; i++)
@@ -143,21 +154,19 @@ void sjfPFun()
     }
     if (flag)
     {
-      for (indexJ = 0; indexJ < n; indexJ++)
+      for (indexJ = 0; indexJ < numberOfProcesses; indexJ++)
       {
-        if (processExecution[indexI] == algoStat[indexJ][0])
+        if (processExecution[indexI] == algorithmStat[indexJ][0])
           processNumber = indexJ;
       }
-      algoStat[processNumber][3] = processExecutionTime[indexI];
+      algorithmStat[processNumber][3] = processExecutionTime[indexI];
       processDone[indexValue] = processExecution[indexI];
       indexValue += 1;
     }
     flag = 1;
   }
 
-  // GRANTT CHART
-
-  printf("\n----------------\n");
+  printf("\n----------------\n"); // GRANTT CHART
   printf("| GRANTT CHART |\n");
   printf("----------------\n\n");
   for (indexNumber = 0; indexNumber < totalBTime; indexNumber++)
@@ -172,63 +181,62 @@ void sjfPFun()
   for (indexNumber = 0; indexNumber < totalBTime; indexNumber++)
     printf("  %d", processExecutionTime[indexNumber]);
 
-  // CALCULATIONS
-  for (indexNumber = 0; indexNumber < n; indexNumber++)
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++) // CALCULATIONS
   {
-    algoStat[indexNumber][4] = algoStat[indexNumber][3] - algoStat[indexNumber][1];
-    algoStat[indexNumber][5] = algoStat[indexNumber][4] - algoStat[indexNumber][2];
+    algorithmStat[indexNumber][4] = algorithmStat[indexNumber][3] - algorithmStat[indexNumber][1];
+    algorithmStat[indexNumber][5] = algorithmStat[indexNumber][4] - algorithmStat[indexNumber][2];
   }
-  for (indexNumber = 0; indexNumber < n; indexNumber++)
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
   {
-    tTAT += algoStat[indexNumber][4];
-    tWT += algoStat[indexNumber][5];
+    aTurnAroundTime += algorithmStat[indexNumber][4];
+    aWaitingTime += algorithmStat[indexNumber][5];
   }
-
-  // DISPLAY STAT
-  displayStat();
-
+  displayStat(); // DISPLAY STAT
   printf("\n\n");
-  printf("AVERAGE TURN AROUND TIME : %.2f ms\nAVERAGE WAITING TIME : %.2f ms\n", tTAT / n, tWT / n);
+  printf("AVERAGE TURN AROUND TIME : %.2f ms\nAVERAGE WAITING TIME : %.2f ms\n", aTurnAroundTime / numberOfProcesses, aWaitingTime / numberOfProcesses);
 }
+
+//////////////////////////////////////////////////////////////////////////////
 
 int main()
 {
-  int i;
+  int indexNumber;
   printf("------------------\n");
   printf("| 1.FCFS | 2.SJF |\n");
   printf("------------------\n");
   printf("CHOOSE THE ALGORITHM : ");
   scanf("%d", &choice);
   printf("ENTER THE NUMBER OF PROCESS : ");
-  scanf("%d", &n);
+  scanf("%d", &numberOfProcesses); // NUMBER OF PROCESSES
   printf("ENTER THE PROCESS NUMBERS: ");
-  for (i = 0; i < n; i++)
-    scanf("%d", &algoStat[i][0]);
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
+    scanf("%d", &algorithmStat[indexNumber][0]); // PROCESS NUMBERS
   printf("ENTER THE ARRIVAL TIMES: ");
-  for (i = 0; i < n; i++)
-    scanf("%d", &algoStat[i][1]);
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
+    scanf("%d", &algorithmStat[indexNumber][1]); // ARRIVAL TIMES
   printf("ENTER THE BURST TIMES: ");
-  for (i = 0; i < n; i++)
-    scanf("%d", &algoStat[i][2]);
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
+    scanf("%d", &algorithmStat[indexNumber][2]); // BURST TIMES
   if (choice == 1)
-    fcfsFun();
+    fcfsAlgorithm();
   else if (choice == 2)
   {
     printf("\n-----------------------------------\n");
     printf("| 1.NON-PREEMPTIVE | 2.PREEMPTIVE |\n");
     printf("-----------------------------------\n");
     printf("CHOICE : ");
-    scanf("%d", &algoChoice);
-    if (algoChoice == 1)
+    scanf("%d", &type);
+    if (type == 1)
     {
-      arrangeBT(2);
-      granttChart(n);
-      fcfsFun();
+      arrangeStat(2);
+      fcfsAlgorithm();
     }
-    else if (algoChoice == 2)
-      sjfPFun();
+    else if (type == 2)
+      srtfAlgorithm();
   }
   else
-    printf("INVLID CHOICE.\n");
+    printf("INVALID CHOICE.\n");
   return 0;
 }
+
+//////////////////////////////////////////////////////////////////////////////
