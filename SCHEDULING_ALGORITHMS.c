@@ -10,7 +10,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-int numberOfProcesses, choice, type, algorithmStat[MAX][7];
+int numberOfProcesses, choice, type, algorithmStat[MAX][8];
 float aTurnAroundTime = 0, aWaitingTime = 0;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -48,7 +48,7 @@ void arrangeStat(int indexValue)
 void displayStat()
 {
   int indexI;
-  printf("\n---------------------------------------------------------------------------------------\n");
+  printf("\n\n---------------------------------------------------------------------------------------\n");
   printf("| PID | ARRIVAL TIME | BURST TIME | COMPLETION TIME | TURN AROUND TIME | WAITING TIME |\n");
   printf("---------------------------------------------------------------------------------------\n");
   for (indexI = 0; indexI < numberOfProcesses; indexI++)
@@ -111,8 +111,8 @@ void fcfsAlgorithm()
 // SRTF ALGORITHM
 void srtfAlgorithm()
 {
-  int i, indexI, indexJ, indexNumber, indexValue, count = 0, totalBTime = 0, processExecutedFor = 0, tempElement, processNumber, flag = 1;
-  int processExecution[MAX], processExecutionTime[MAX], processDone[MAX];
+  int i, indexI, indexJ, indexNumber, indexValue, count = 0, totalBTime = 0, processExecutedFor = 0, tempElement, processNumber, flag = 1, processOnChart = -1;
+  int processExecution[MAX], processExecutionTime[MAX], processDone[MAX], processForChart[MAX], chartTime[MAX];
 
   arrangeStat(1); // ARRANGE THE ARRIVAL TIMES IN INCREASING ORDER
   for (indexI = 0; indexI < numberOfProcesses; indexI++)
@@ -121,6 +121,7 @@ void srtfAlgorithm()
     totalBTime += algorithmStat[indexI][2];              // FIND TOTAL BURST TIME
     processDone[indexI] = -1;
   }
+
   for (indexI = 0; indexI < totalBTime; indexI++)
   {
     for (indexJ = 0; indexJ < numberOfProcesses; indexJ++)
@@ -128,11 +129,12 @@ void srtfAlgorithm()
       if (algorithmStat[indexJ][1] == indexI) // CHECK HOW MANY PROCESSES ARRIVED
         count += 1;
     }
-    tempElement = algorithmStat[0][6];
-    processNumber = 0;
-    for (i = 1; i < count; i++)
+
+    tempElement = algorithmStat[0][6]; // PROBLEM (BUG) for inputs
+    processNumber = 0;                 // AT = 0 1 2 3
+    for (i = 1; i < count; i++)        // BT = 9 4 9 5
     {
-      if (tempElement > algorithmStat[i][6] && algorithmStat[i][6] != 0)
+      if (tempElement > algorithmStat[i][6] && !(algorithmStat[i][6] < 1))
       {
         tempElement = algorithmStat[i][6];
         processNumber = i;
@@ -143,6 +145,9 @@ void srtfAlgorithm()
     processExecution[indexI] = algorithmStat[processNumber][0];            // PUT PID
     algorithmStat[processNumber][6] = algorithmStat[processNumber][6] - 1; // DECREMENT BT
   }
+
+  for (indexI = 0; indexI < totalBTime; indexI++)
+    printf("P%d ", processExecution[indexI]);
 
   indexValue = 0; // CALCULATE THE COMPLETION TIME
   for (indexI = totalBTime - 1; indexI >= 0; indexI--)
@@ -169,17 +174,28 @@ void srtfAlgorithm()
   printf("\n----------------\n"); // GRANTT CHART
   printf("| GRANTT CHART |\n");
   printf("----------------\n\n");
-  for (indexNumber = 0; indexNumber < totalBTime; indexNumber++)
-    printf("---- ");
+
+  indexValue = 0;
+  for (indexNumber = totalBTime - 1; indexNumber >= 0; indexNumber--)
+    if (processExecution[indexNumber] != processOnChart)
+    {
+      processOnChart = processExecution[indexNumber];
+      processForChart[indexValue] = processExecution[indexNumber];
+      chartTime[indexValue] = processExecutionTime[indexNumber];
+      indexValue += 1;
+    }
+
+  for (indexNumber = indexValue - 1; indexNumber >= 0; indexNumber--)
+    printf("------ ");
   printf("\n");
-  for (indexNumber = 0; indexNumber < totalBTime; indexNumber++)
-    printf("|P%d| ", processExecution[indexNumber]);
+  for (indexNumber = indexValue - 1; indexNumber >= 0; indexNumber--)
+    printf("| P%d | ", processForChart[indexNumber]);
   printf("\n");
-  for (indexNumber = 0; indexNumber < totalBTime; indexNumber++)
-    printf("---- ");
+  for (indexNumber = indexValue - 1; indexNumber >= 0; indexNumber--)
+    printf("------ ");
   printf("\n");
-  for (indexNumber = 0; indexNumber < totalBTime; indexNumber++)
-    printf("  %d", processExecutionTime[indexNumber]);
+  for (indexNumber = indexValue - 1; indexNumber >= 0; indexNumber--)
+    printf("      %d", chartTime[indexNumber]);
 
   for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++) // CALCULATIONS
   {
@@ -201,9 +217,9 @@ void srtfAlgorithm()
 int main()
 {
   int indexNumber;
-  printf("------------------\n");
-  printf("| 1.FCFS | 2.SJF |\n");
-  printf("------------------\n");
+  printf("------------------------------\n");
+  printf("| 1.FCFS | 2.SJF | 3.PRORITY |\n");
+  printf("------------------------------\n");
   printf("CHOOSE THE ALGORITHM : ");
   scanf("%d", &choice);
   printf("ENTER THE NUMBER OF PROCESS : ");
@@ -233,6 +249,22 @@ int main()
     }
     else if (type == 2)
       srtfAlgorithm();
+  }
+  else if (choice == 3)
+  {
+    printf("\n-----------------------------------\n");
+    printf("| 1.NON-PREEMPTIVE | 2.PREEMPTIVE |\n");
+    printf("-----------------------------------\n");
+    printf("CHOICE : ");
+    scanf("%d", &type);
+    if (type == 1)
+    {
+      printf("\nENTER THE PRORITY ORDER : ");
+      for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
+        scanf("%d", &algorithmStat[indexNumber][7]); // PRIORITY ORDER
+      arrangeStat(7);
+      fcfsAlgorithm();
+    }
   }
   else
     printf("INVALID CHOICE.\n");

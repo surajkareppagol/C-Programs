@@ -17,3 +17,9 @@ C Program to print pattern.
 C Program for Scheduling Algorithms.
 
 ![SA](images/SA.png)
+
+## ASCII TEXT GENERATOR :
+
+C Program for ASCII Text genaration.
+
+![A](images/A.png)
