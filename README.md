@@ -1,5 +1,7 @@
 # C PROGRAMS
 
+Some random **C Programs**.
+
 ## KNAPSACK'S PROBLEM :
 
 C Program for Knapsack's Problem.
@@ -14,7 +16,7 @@ C Program to print pattern.
 
 ## SCHEDULING ALGORITHMS :
 
-C Program for Scheduling Algorithms.
+C Program for Scheduling Algorithms.Such as `FCFS`, `SJF`, `SRTF` etc.
 
 ![SA](images/SA.png)
 

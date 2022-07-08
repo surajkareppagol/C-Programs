@@ -18,7 +18,7 @@ float aTurnAroundTime = 0, aWaitingTime = 0;
 // ARRANGE STATS IN INCREASING ORDER
 void arrangeStat(int indexValue)
 {
-  int indexI, indexJ, numberOfIndex, indexNumber = numberOfProcesses, processNumber, arrivalTime, burstTime, tempElement;
+  int indexI, indexJ, numberOfIndex, indexNumber = numberOfProcesses, processNumber, arrivalTime, burstTime, prorityOrder, tempElement;
   for (indexI = 0; indexI < numberOfProcesses; indexI++)
   {
     tempElement = algorithmStat[0][indexValue];
@@ -29,12 +29,18 @@ void arrangeStat(int indexValue)
         tempElement = algorithmStat[indexJ][indexValue];
         numberOfIndex = indexJ;
       }
+    if (choice > 2)
+      prorityOrder = algorithmStat[indexNumber - 1][7];
     processNumber = algorithmStat[indexNumber - 1][0];
     arrivalTime = algorithmStat[indexNumber - 1][1];
     burstTime = algorithmStat[indexNumber - 1][2]; // SWAP TEMP = A
+    if (choice > 2)
+      algorithmStat[indexNumber - 1][7] = algorithmStat[numberOfIndex][7];
     algorithmStat[indexNumber - 1][0] = algorithmStat[numberOfIndex][0];
     algorithmStat[indexNumber - 1][1] = algorithmStat[numberOfIndex][1];
     algorithmStat[indexNumber - 1][2] = algorithmStat[numberOfIndex][2]; // SWAP A = B
+    if (choice > 2)
+      algorithmStat[numberOfIndex][7] = prorityOrder;
     algorithmStat[numberOfIndex][0] = processNumber;
     algorithmStat[numberOfIndex][1] = arrivalTime;
     algorithmStat[numberOfIndex][2] = burstTime; // SWAP B = TEMP
@@ -130,9 +136,16 @@ void srtfAlgorithm()
         count += 1;
     }
 
-    tempElement = algorithmStat[0][6]; // PROBLEM (BUG) for inputs
-    processNumber = 0;                 // AT = 0 1 2 3
-    for (i = 1; i < count; i++)        // BT = 9 4 9 5
+    for (indexValue = 0; indexValue < count; indexValue++)
+    {
+      if (algorithmStat[indexValue][6] > 0)
+      {
+        tempElement = algorithmStat[indexValue][6];
+        processNumber = indexValue;
+        break;
+      }
+    }
+    for (i = 1; i < count; i++)
     {
       if (tempElement > algorithmStat[i][6] && !(algorithmStat[i][6] < 1))
       {
@@ -145,9 +158,6 @@ void srtfAlgorithm()
     processExecution[indexI] = algorithmStat[processNumber][0];            // PUT PID
     algorithmStat[processNumber][6] = algorithmStat[processNumber][6] - 1; // DECREMENT BT
   }
-
-  for (indexI = 0; indexI < totalBTime; indexI++)
-    printf("P%d ", processExecution[indexI]);
 
   indexValue = 0; // CALCULATE THE COMPLETION TIME
   for (indexI = totalBTime - 1; indexI >= 0; indexI--)
@@ -214,6 +224,56 @@ void srtfAlgorithm()
 
 //////////////////////////////////////////////////////////////////////////////
 
+// UNDER DEVELOPMENT
+// PRORITY NON-PREEMPTIVE
+void priorityNPAlgorithm()
+{
+  int i, indexI, indexJ, indexValue, indexNumber, totalBTime = 0, tempElement, count = 0, processExecutedFor = 0, processNumber, flag = 0, indexNumValue = 0;
+  int processExecutionTime[MAX], processExecution[MAX];
+  arrangeStat(1);
+  for (indexI = 0; indexI < numberOfProcesses; indexI++)
+  {
+    for (indexJ = 0; indexJ < numberOfProcesses; indexJ++)
+    {
+      if (algorithmStat[indexJ][1] == indexI) // CHECK HOW MANY PROCESSES ARRIVED
+        count += 1;
+    }
+
+    for (indexValue = 0; indexValue < count; indexValue++)
+    {
+      if (algorithmStat[indexValue][7] > -1)
+      {
+        tempElement = algorithmStat[indexValue][7];
+        processNumber = indexValue;
+        break;
+      }
+    }
+    for (i = 1; i < count; i++)
+    {
+      if (tempElement > algorithmStat[i][7] && algorithmStat[i][7] > -1)
+      {
+        tempElement = algorithmStat[i][7];
+        processNumber = i;
+        flag = 1;
+      }
+    } // FIND HIGHEST PRIORITY
+    if (flag)
+    {
+      processExecutedFor += algorithmStat[processNumber][2];             // EXECUTE
+      processExecutionTime[indexNumValue] = processExecutedFor;          // PUT EXECUTION TIME
+      processExecution[indexNumValue] = algorithmStat[processNumber][0]; // PUT PID
+      algorithmStat[processNumber][7] = -1;
+      indexNumValue += 1;
+    }
+    flag = 0;
+  }
+
+  for (indexI = 0; indexI < numberOfProcesses; indexI++)
+    printf("P%d %d \n", processExecution[indexI], processExecutionTime[indexI]);
+}
+
+//////////////////////////////////////////////////////////////////////////////
+
 int main()
 {
   int indexNumber;
@@ -252,6 +312,9 @@ int main()
   }
   else if (choice == 3)
   {
+    printf("ENTER THE PRORITY ORDER : ");
+    for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
+      scanf("%d", &algorithmStat[indexNumber][7]); // PRIORITY ORDER
     printf("\n-----------------------------------\n");
     printf("| 1.NON-PREEMPTIVE | 2.PREEMPTIVE |\n");
     printf("-----------------------------------\n");
@@ -259,11 +322,7 @@ int main()
     scanf("%d", &type);
     if (type == 1)
     {
-      printf("\nENTER THE PRORITY ORDER : ");
-      for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
-        scanf("%d", &algorithmStat[indexNumber][7]); // PRIORITY ORDER
-      arrangeStat(7);
-      fcfsAlgorithm();
+      priorityNPAlgorithm();
     }
   }
   else

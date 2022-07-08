@@ -1,14 +1,19 @@
-/*   DO NOT EDIT THIS
+/*
  *   AUTHOR : SHADOWW
- *   LAST MODIFIED : 05 / 07 / 2022
+ *   LAST MODIFIED : 07 / 07 / 2022
  */
+
+//////////////////////////////////////////////////////////////////////////////
 
 #include <stdio.h>
 #define MAX 20
 
+//////////////////////////////////////////////////////////////////////////////
+
 int i, j, n, x, indexNumber, maxCapacity;
 float knapsackStat[MAX][6], totalProfit = 0, remainingCapacity, elementW, elementP, elementPW, tempElement;
 
+//////////////////////////////////////////////////////////////////////////////
 void arrangePWRatio()
 {
   // Find the minimum p/w ratio
@@ -40,6 +45,7 @@ void arrangePWRatio()
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////
 void displayResult(int type)
 {
   if (type == 1)
@@ -68,6 +74,7 @@ void displayResult(int type)
   }
 }
 
+//////////////////////////////////////////////////////////////////////////////
 int main()
 {
   printf("\n\nENTER THE NUMBER OF OBJECTS AND MAX CAPACITY : ");
@@ -112,3 +119,5 @@ int main()
   printf("THE TOTAL PROFIT IS : %.2f\n\n", totalProfit);
   return 0;
 }
+
+//////////////////////////////////////////////////////////////////////////////
