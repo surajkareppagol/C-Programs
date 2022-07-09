@@ -10,7 +10,7 @@
 
 //////////////////////////////////////////////////////////////////////////////
 
-int numberOfProcesses, choice, type, algorithmStat[MAX][8];
+int numberOfProcesses, choice, type, algorithmStat[MAX][10];
 float aTurnAroundTime = 0, aWaitingTime = 0;
 
 //////////////////////////////////////////////////////////////////////////////
@@ -224,27 +224,34 @@ void srtfAlgorithm()
 
 //////////////////////////////////////////////////////////////////////////////
 
-// UNDER DEVELOPMENT
 // PRORITY NON-PREEMPTIVE
 void priorityNPAlgorithm()
 {
-  int i, indexI, indexJ, indexValue, indexNumber, totalBTime = 0, tempElement, count = 0, processExecutedFor = 0, processNumber, flag = 0, indexNumValue = 0;
-  int processExecutionTime[MAX], processExecution[MAX];
+  int i, indexI, indexJ, indexNumber, indexValue = 0, count = 0, processExecutedFor = 0, processNumber, tempProcess = -1, tempElement;
+  int processExecution[MAX];
   arrangeStat(1);
+
+  for (indexI = 0; indexI < numberOfProcesses; indexI++)
+    algorithmStat[indexI][6] = algorithmStat[indexI][2]; // COPY BURST TIME
+
   for (indexI = 0; indexI < numberOfProcesses; indexI++)
   {
-    for (indexJ = 0; indexJ < numberOfProcesses; indexJ++)
+    if (processExecutedFor > algorithmStat[numberOfProcesses - 1][2])
+      count = numberOfProcesses; // IF ALL PROCESSES ALREADY ARRIVED
+    else if (algorithmStat[indexValue][1] != tempProcess)
     {
-      if (algorithmStat[indexJ][1] == indexI) // CHECK HOW MANY PROCESSES ARRIVED
-        count += 1;
+      tempProcess = algorithmStat[indexValue][1];
+      for (indexJ = 0; indexJ < numberOfProcesses; indexJ++)
+        if (algorithmStat[indexJ][1] == tempProcess) // CHECK HOW MANY PROCESSES ARRIVED
+          count += 1;
     }
 
-    for (indexValue = 0; indexValue < count; indexValue++)
+    for (indexNumber = 0; indexNumber < count; indexNumber++) // FIND HIGHEST PRORITY
     {
-      if (algorithmStat[indexValue][7] > -1)
+      if (algorithmStat[indexNumber][7] > -1)
       {
-        tempElement = algorithmStat[indexValue][7];
-        processNumber = indexValue;
+        tempElement = algorithmStat[indexNumber][7];
+        processNumber = indexNumber;
         break;
       }
     }
@@ -254,22 +261,44 @@ void priorityNPAlgorithm()
       {
         tempElement = algorithmStat[i][7];
         processNumber = i;
-        flag = 1;
       }
-    } // FIND HIGHEST PRIORITY
-    if (flag)
-    {
-      processExecutedFor += algorithmStat[processNumber][2];             // EXECUTE
-      processExecutionTime[indexNumValue] = processExecutedFor;          // PUT EXECUTION TIME
-      processExecution[indexNumValue] = algorithmStat[processNumber][0]; // PUT PID
-      algorithmStat[processNumber][7] = -1;
-      indexNumValue += 1;
-    }
-    flag = 0;
+    }                                                           // FIND HIGHEST PRIORITY
+    processExecutedFor += algorithmStat[processNumber][6];      // EXECUTE
+    algorithmStat[indexI][3] = processExecutedFor;              // COMPLETION TIME
+    processExecution[indexI] = algorithmStat[processNumber][0]; // PUT PID
+    algorithmStat[processNumber][6] = 0;                        // BURST TIME = 0
+    algorithmStat[processNumber][7] = -1;                       // PRIORITY = -1
+    indexValue += 1;
   }
 
-  for (indexI = 0; indexI < numberOfProcesses; indexI++)
-    printf("P%d %d \n", processExecution[indexI], processExecutionTime[indexI]);
+  printf("\n----------------\n"); // GRANTT CHART
+  printf("| GRANTT CHART |\n");
+  printf("----------------\n\n");
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
+    printf("------ ");
+  printf("\n");
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
+    printf("| P%d | ", processExecution[indexNumber]);
+  printf("\n");
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
+    printf("------ ");
+  printf("\n");
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
+    printf("      %d", algorithmStat[indexNumber][3]);
+
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++) // CALCULATIONS
+  {
+    algorithmStat[indexNumber][4] = algorithmStat[indexNumber][3] - algorithmStat[indexNumber][1];
+    algorithmStat[indexNumber][5] = algorithmStat[indexNumber][4] - algorithmStat[indexNumber][2];
+  }
+  for (indexNumber = 0; indexNumber < numberOfProcesses; indexNumber++)
+  {
+    aTurnAroundTime += algorithmStat[indexNumber][4];
+    aWaitingTime += algorithmStat[indexNumber][5];
+  }
+  displayStat(); // DISPLAY STAT
+  printf("\n\n");
+  printf("AVERAGE TURN AROUND TIME : %.2f ms\nAVERAGE WAITING TIME : %.2f ms\n", aTurnAroundTime / numberOfProcesses, aWaitingTime / numberOfProcesses);
 }
 
 //////////////////////////////////////////////////////////////////////////////
