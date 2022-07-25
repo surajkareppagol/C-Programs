@@ -25,3 +25,10 @@ C Program for Scheduling Algorithms.Such as `FCFS`, `SJF`, `SRTF` etc.
 C Program for ASCII Text genaration.
 
 ![A](images/A.png)
+
+## K_ALGORITHM :
+
+C Program for Kruskal's Algorithm.
+
+![KA](images/KA.png)
+
