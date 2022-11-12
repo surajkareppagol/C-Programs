@@ -1,3 +1,9 @@
+/*
+ *   AUTHOR : SHADOWW
+ *   LAST MODIFIED : 12 / 12 / 2022
+ */
+
+//////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include <ctype.h>
 #define MAX 20
