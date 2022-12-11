@@ -563,7 +563,7 @@ void roundRobinAlgorithm()
       // CHECK IF NEW PROCESS HAVE BEEN ARRIVED
       if (trackProcess < numberOfProcesses)
       {
-        for (i = 1; i < numberOfProcesses; i++) ///////////////
+        for (i = 1; i < numberOfProcesses; i++)
           if (processSent[i] != algorithmStat[i][0])
             flag = 1;
 

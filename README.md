@@ -68,4 +68,10 @@ I came to know about this in hackerrank.com it was one of the challenge, and yes
 
 ![Concentric Square](/resources/concentricSquare.gif)
 
+### Number Pattern
+
+This program was a challenge program in google dev fest but i couldn't able to solve it there, but after coming home looked at the pattern then i saw that this problem was a piece of cake, but yeah i failed to solve it there.
+
+![Number Pattern](/resources/numberPattern.gif)
+
 ---
