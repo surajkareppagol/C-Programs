@@ -4,7 +4,7 @@ This repo contains a bunch of **C** Programs, which are created from scratch.The
 
 ---
 
-## \* Algorithm_Technique_Problems
+## Algorithm_Technique_Problems
 
 In this section i have created the programs for the problems which i studied during the subject `DESIGN AND ANALYSIS OF ALGORITHMS`, `OPERATING SYSTEM CONCEPTS` and other.The new design techinques were very helpful for the future projects.
 
@@ -14,11 +14,11 @@ The [knapsack problem](https://en.wikipedia.org/wiki/Knapsack_problem) is a prob
 
 So there are different methods for solving this problems like `Greedy Method`, `Dynamic Method` etc.This program is based on the `Greedy Method`.
 
-![Knapsack Greedy](/resources/knapsackGreedy.gif)
+![Knapsack Greedy](https://raw.githubusercontent.com/surajkareppagol/Assets/main/6%20-%20C-Programs/knapsackGreedy.gif)
 
 ---
 
-## \* Graph_Programs
+## Graph_Programs
 
 In mathematics, and more specifically in graph theory, a [Graph](<https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)>) is a structure amounting to a set of objects in which some pairs of the objects are in some sense "related". The objects correspond to mathematical abstractions called vertices (also called nodes or points) and each of the related pairs of vertices is called an edge (also called link or line).
 
@@ -32,11 +32,11 @@ Here i took a diiferent approch to solve this.It's main condition is that if a *
 
 To know more about Kruskal's algorithm [Click Here 🔗🔗.](https://en.wikipedia.org/wiki/Kruskal%27s_algorithm)
 
-![kruskals algorithm](/resources/kruskalsAlgorithm.gif)
+![kruskals algorithm](https://raw.githubusercontent.com/surajkareppagol/Assets/main/6%20-%20C-Programs/kruskalsAlgorithm.gif)
 
 ---
 
-## \* OS Problems
+## OS Problems
 
 An [operating system](https://en.wikipedia.org/wiki/Operating_system) (OS) is system software that manages computer hardware, software resources, and provides common services for computer programs.
 
@@ -48,11 +48,11 @@ In computing, [scheduling](<https://en.wikipedia.org/wiki/Scheduling_(computing)
 
 Scheduling algorithms play vital role in your computers, i had studied algorithms such as `First Come First Serve (FCFS)`, `Shortest Job First (SJF)`, `Priority Scheduling`, and `Round Robin` and i have implemented all of these in a single program.
 
-![Scheduling Algorithms](/resources/schedulingAlgorithms.gif)
+![Scheduling Algorithms](https://raw.githubusercontent.com/surajkareppagol/Assets/main/6%20-%20C-Programs/schedulingAlgorithms.gif)
 
 ---
 
-## \* Pattern Programs
+## Pattern Programs
 
 A [pattern](https://en.wikipedia.org/wiki/Pattern) is a regularity in the world, in human-made design, or in abstract ideas. As such, the elements of a pattern repeat in a predictable manner.I know this does not define correctly what this category is actually, let's say it contains programs to print different patterns.
 
@@ -60,18 +60,16 @@ A [pattern](https://en.wikipedia.org/wiki/Pattern) is a regularity in the world,
 
 This is a simple program which just converts the normal text into ascii text, i wanted to make it dynamic like those online ascii art generators but i think it will take a lot of work though.
 
-![ASCII Text](/resources/asciiText.gif)
+![ASCII Text](https://raw.githubusercontent.com/surajkareppagol/Assets/main/6%20-%20C-Programs/asciiText.gif)
 
 ### Concentric Square
 
 I came to know about this in hackerrank.com it was one of the challenge, and yes it was hard took me around 2 hours to solve it but the output is worth it.
 
-![Concentric Square](/resources/concentricSquare.gif)
+![Concentric Square](https://raw.githubusercontent.com/surajkareppagol/Assets/main/6%20-%20C-Programs/concentricSquare.gif)
 
 ### Number Pattern
 
 This program was a challenge program in google dev fest but i couldn't able to solve it there, but after coming home looked at the pattern then i saw that this problem was a piece of cake, but yeah i failed to solve it there.
 
-![Number Pattern](/resources/numberPattern.gif)
-
----
+![Number Pattern](https://raw.githubusercontent.com/surajkareppagol/Assets/main/6%20-%20C-Programs/numberPattern.gif)
